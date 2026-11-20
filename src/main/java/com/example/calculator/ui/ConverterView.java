@@ -38,7 +38,7 @@ public final class ConverterView extends HBox {
     private static final ExpressionEvaluator.Context CONTEXT =
             new ExpressionEvaluator.Context(AngleUnit.RADIANS, 0, Math::random);
 
-    private final ComboBox<UnitCategory> category = new ComboBox<>(FXCollections.observableList(Units.CATEGORIES));
+    private final ComboBox<UnitCategory> category = new ComboBox<>(FXCollections.observableArrayList(Units.CATEGORIES));
     private final TextField input = new TextField("1");
     private final ComboBox<Unit> fromUnit = new ComboBox<>();
     private final ComboBox<Unit> toUnit = new ComboBox<>();
@@ -137,9 +137,11 @@ public final class ConverterView extends HBox {
     // ---- behaviour --------------------------------------------------------------------------
 
     private void selectCategory(UnitCategory c) {
-        fromUnit.setItems(FXCollections.observableList(c.units()));
-        toUnit.setItems(FXCollections.observableList(c.units()));
-        allUnits.setItems(FXCollections.observableList(c.units()));
+        // Copies, not views of the read-only lists: ComboBox calls indexOf(null) when its items change,
+        // which read-only lists reject with a NullPointerException.
+        fromUnit.setItems(FXCollections.observableArrayList(c.units()));
+        toUnit.setItems(FXCollections.observableArrayList(c.units()));
+        allUnits.setItems(FXCollections.observableArrayList(c.units()));
         fromUnit.setValue(c.defaultFrom());
         toUnit.setValue(c.defaultTo());
         recalculate();
