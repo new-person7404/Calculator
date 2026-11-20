@@ -1,0 +1,3 @@
+# Keep shell scripts LF and Windows scripts CRLF so mvnw works on every OS
+mvnw text eol=lf
+*.cmd text eol=crlf

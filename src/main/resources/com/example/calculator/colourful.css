@@ -1,0 +1,42 @@
+/* Colourful theme: loaded after styles.css and only changes the palette. */
+
+.root {
+    -fx-accent: #7c3aed;
+    -fx-focus-color: #7c3aed;
+    -fx-faint-focus-color: #7c3aed22;
+
+    -app-bg: linear-gradient(to bottom right, #6a11cb, #2575fc);
+    -header-text: white;
+    -caption-text: rgba(255, 255, 255, 0.85);
+
+    -display-bg: rgba(255, 255, 255, 0.95);
+    -display-border: transparent;
+    -indicator-text: #7c3aed;
+    -expression-text: #6b5b95;
+    -result-text: #2d1b69;
+    -preview-text: #9b8fc7;
+    -error-text: #e11d48;
+
+    -key-border: transparent;
+    -digit-bg: rgba(255, 255, 255, 0.95);
+    -digit-text: #2d1b69;
+    -operator-bg: #ff9f43;
+    -operator-text: white;
+    -function-bg: #e4dcff;
+    -function-text: #4c1d95;
+    -control-bg: #ff6b81;
+    -control-text: white;
+    -memory-text: white;
+    -equals-bg: linear-gradient(to bottom right, #f857a6, #ff5858);
+    -equals-text: white;
+    -on-bg: #ffd43b;
+    -on-text: #3b2a00;
+    -on-border: #ffd43b;
+    -hover-overlay: rgba(0, 0, 0, 0.07);
+    -pressed-overlay: rgba(0, 0, 0, 0.18);
+
+    -output-bg: #fff3e0;
+    -output-text: #2d1b69;
+    -formula-text: rgba(255, 255, 255, 0.85);
+    -unit-name-text: #7a6fa6;
+}

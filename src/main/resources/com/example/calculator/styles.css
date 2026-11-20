@@ -1,0 +1,254 @@
+/*
+ * Layout and the Light theme.
+ *
+ * Every colour comes from the palette in .root below. dark.css and colourful.css are loaded
+ * after this file and only redefine the palette, so the rules here never need to change.
+ */
+
+/* ---- palette (Light) ------------------------------------------------------------------------- */
+
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", "Arial", sans-serif;
+
+    -app-bg: #f3f3f3;
+    -header-text: #1a1a1a;
+    -caption-text: #616161;
+
+    -display-bg: white;
+    -display-border: #e0e0e0;
+    -indicator-text: #0067c0;
+    -expression-text: #616161;
+    -result-text: #1a1a1a;
+    -preview-text: #8a8a8a;
+    -error-text: #c42b1c;
+
+    -key-border: #e5e5e5;
+    -digit-bg: white;
+    -digit-text: #1a1a1a;
+    -operator-bg: #eef2f8;
+    -operator-text: #1a1a1a;
+    -function-bg: #f6f6f6;
+    -function-text: #1a1a1a;
+    -control-bg: #f6f6f6;
+    -control-text: #1a1a1a;
+    -memory-text: #1a1a1a;
+    -equals-bg: #0067c0;
+    -equals-text: white;
+    -on-bg: #cfe3f7;
+    -on-text: #0067c0;
+    -on-border: #0067c0;
+    -hover-overlay: rgba(0, 0, 0, 0.05);
+    -pressed-overlay: rgba(0, 0, 0, 0.13);
+
+    -output-bg: #eef2f8;
+    -output-text: #1a1a1a;
+    -formula-text: #616161;
+    -unit-name-text: #757575;
+}
+
+/* ---- window -------------------------------------------------------------------------------- */
+
+.app {
+    -fx-background-color: -app-bg;
+}
+
+.mode-header {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -header-text;
+    -fx-padding: 8 14 0 14;
+}
+
+/* ---- calculator display -------------------------------------------------------------------- */
+
+.calculator {
+    -fx-padding: 8 10 10 10;
+}
+
+.display {
+    -fx-background-color: -display-bg;
+    -fx-background-radius: 8;
+    -fx-border-color: -display-border;
+    -fx-border-radius: 8;
+    -fx-padding: 6 14 8 14;
+}
+
+.calculator .keypad {
+    -fx-padding: 8 0 0 0;
+}
+
+.indicators {
+    -fx-min-height: 16px;
+}
+
+.indicator {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -indicator-text;
+}
+
+.expression {
+    -fx-font-size: 15px;
+    -fx-text-fill: -expression-text;
+    -fx-min-height: 22px;
+}
+
+.result {
+    -fx-font-size: 36px;
+    -fx-font-weight: 600;
+    -fx-text-fill: -result-text;
+    -fx-min-height: 50px;
+}
+
+.result.preview {
+    -fx-text-fill: -preview-text;
+}
+
+.result.long {
+    -fx-font-size: 26px;
+}
+
+.result.very-long {
+    -fx-font-size: 20px;
+}
+
+.result.error {
+    -fx-text-fill: -error-text;
+    -fx-font-size: 24px;
+}
+
+/* ---- keypad buttons ------------------------------------------------------------------------ */
+
+.keypad {
+    -fx-hgap: 4;
+    -fx-vgap: 4;
+}
+
+/* Each kind of key sets -key-bg / -key-text; hover and press add a translucent overlay on top. */
+.calc-button {
+    -key-bg: -function-bg;
+    -key-text: -function-text;
+    -fx-pref-width: 66px;
+    -fx-pref-height: 46px;
+    -fx-background-color: -key-bg;
+    -fx-background-insets: 0;
+    -fx-background-radius: 6;
+    -fx-border-color: -key-border;
+    -fx-border-radius: 6;
+    -fx-text-fill: -key-text;
+    -fx-font-size: 15px;
+    -fx-padding: 2;
+    -fx-cursor: hand;
+}
+
+.calc-button.digit {
+    -key-bg: -digit-bg;
+    -key-text: -digit-text;
+    -fx-font-size: 19px;
+    -fx-font-weight: 600;
+}
+
+.calc-button.operator {
+    -key-bg: -operator-bg;
+    -key-text: -operator-text;
+    -fx-font-size: 20px;
+}
+
+.calc-button.control {
+    -key-bg: -control-bg;
+    -key-text: -control-text;
+}
+
+.calc-button.memory {
+    -key-bg: transparent;
+    -key-text: -memory-text;
+    -fx-border-color: transparent;
+    -fx-font-size: 13px;
+    -fx-pref-height: 30px;
+}
+
+.calc-button.equals {
+    -key-bg: -equals-bg;
+    -key-text: -equals-text;
+    -fx-border-color: transparent;
+    -fx-font-size: 22px;
+}
+
+.calc-button.on {
+    -key-bg: -on-bg;
+    -key-text: -on-text;
+    -fx-border-color: -on-border;
+    -fx-font-weight: bold;
+}
+
+.calc-button:hover {
+    -fx-background-color: -key-bg, -hover-overlay;
+    -fx-background-insets: 0, 0;
+    -fx-background-radius: 6, 6;
+}
+
+.calc-button:pressed,
+.calc-button.flash {
+    -fx-background-color: -key-bg, -pressed-overlay;
+    -fx-background-insets: 0, 0;
+    -fx-background-radius: 6, 6;
+}
+
+.calc-button:disabled {
+    -fx-opacity: 0.4;
+}
+
+/* ---- unit converter ------------------------------------------------------------------------ */
+
+.converter {
+    -fx-padding: 8 14 14 14;
+}
+
+.caption {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -caption-text;
+    -fx-padding: 4 0 0 0;
+}
+
+.converter-input,
+.converter-output {
+    -fx-font-size: 22px;
+    -fx-font-weight: 600;
+}
+
+.converter-output {
+    -fx-background-color: -output-bg;
+    -fx-background-radius: 4;
+    -fx-text-fill: -output-text;
+}
+
+.formula {
+    -fx-font-size: 12px;
+    -fx-text-fill: -formula-text;
+    -fx-padding: 2 0 6 0;
+}
+
+.converter .keypad .calc-button {
+    -fx-pref-height: 44px;
+}
+
+.list-view .amount {
+    -fx-font-weight: bold;
+}
+
+.list-view .unit-name {
+    -fx-text-fill: -unit-name-text;
+}
+
+.list-cell:selected .amount,
+.list-cell:selected .unit-name {
+    -fx-text-fill: white;
+}
+
+/* ---- help ---------------------------------------------------------------------------------- */
+
+.shortcuts {
+    -fx-font-family: "Consolas", "Menlo", monospace;
+    -fx-font-size: 13px;
+}

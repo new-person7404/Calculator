@@ -1,0 +1,47 @@
+/* Dark theme: loaded after styles.css and only changes the palette. */
+
+.root {
+    /* Modena's own colours, so menus, lists, text boxes and dialogs turn dark too */
+    -fx-base: #3a3a3a;
+    -fx-background: #202020;
+    -fx-control-inner-background: #2b2b2b;
+    -fx-control-inner-background-alt: #303030;
+    -fx-accent: #4aa3f0;
+    -fx-focus-color: #4aa3f0;
+    -fx-faint-focus-color: #4aa3f022;
+
+    -app-bg: #202020;
+    -header-text: #f2f2f2;
+    -caption-text: #a8a8a8;
+
+    -display-bg: #2b2b2b;
+    -display-border: #383838;
+    -indicator-text: #6cb8f6;
+    -expression-text: #a8a8a8;
+    -result-text: #ffffff;
+    -preview-text: #8f8f8f;
+    -error-text: #ff99a4;
+
+    -key-border: #333333;
+    -digit-bg: #3b3b3b;
+    -digit-text: #ffffff;
+    -operator-bg: #33393f;
+    -operator-text: #ffffff;
+    -function-bg: #2d2d2d;
+    -function-text: #e6e6e6;
+    -control-bg: #2d2d2d;
+    -control-text: #e6e6e6;
+    -memory-text: #e6e6e6;
+    -equals-bg: #4aa3f0;
+    -equals-text: #08131f;
+    -on-bg: #1d3a55;
+    -on-text: #8cc8ff;
+    -on-border: #4aa3f0;
+    -hover-overlay: rgba(255, 255, 255, 0.07);
+    -pressed-overlay: rgba(255, 255, 255, 0.15);
+
+    -output-bg: #33393f;
+    -output-text: #ffffff;
+    -formula-text: #a8a8a8;
+    -unit-name-text: #9a9a9a;
+}
