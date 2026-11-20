@@ -19,6 +19,7 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
@@ -130,6 +131,9 @@ public class App extends Application {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, this::onKeyPressed);
 
         stage.setTitle("Calculator");
+        for (int size : new int[] {16, 32, 48, 64, 128, 256}) {
+            stage.getIcons().add(new Image(resource("icons/icon-" + size + ".png")));
+        }
         stage.setScene(scene);
         setMode(savedMode());
         stage.show();
@@ -164,14 +168,15 @@ public class App extends Application {
     private void setTheme(Theme newTheme) {
         theme = newTheme;
         themeItems.get(newTheme).setSelected(true);
-        scene.getStylesheets().setAll(stylesheet("styles.css"));
+        scene.getStylesheets().setAll(resource("styles.css"));
         if (newTheme.stylesheet != null) {
-            scene.getStylesheets().add(stylesheet(newTheme.stylesheet));
+            scene.getStylesheets().add(resource(newTheme.stylesheet));
         }
         preferences.put(THEME_PREFERENCE, newTheme.name());
     }
 
-    private static String stylesheet(String name) {
+    /** URL of a file in this package's resources (stylesheets, icons). */
+    private static String resource(String name) {
         return App.class.getResource(name).toExternalForm();
     }
 

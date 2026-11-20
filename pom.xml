@@ -6,7 +6,8 @@
 
     <groupId>com.example</groupId>
     <artifactId>calculator</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <!-- Plain numbers only: jpackage puts this version into Calculator.exe and rejects "-SNAPSHOT". -->
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>Calculator</name>
 
@@ -53,8 +54,154 @@
                         <!-- JavaFX loads native libraries; allow it explicitly to avoid JDK 25 warnings -->
                         <option>--enable-native-access=javafx.graphics</option>
                     </options>
+                    <!-- Used by javafx:jlink (dist profile): a trimmed Java runtime containing the app -->
+                    <jlinkImageName>runtime</jlinkImageName>
+                    <stripDebug>true</stripDebug>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!--
+            Portable build to share:  ./mvnw -Pdist package
+            Produces target/Calculator-<version>-<platform>.zip containing a Calculator folder with
+            the app launcher and its own Java runtime, so no Java install is needed to run it.
+            Must be built on each operating system it should run on.
+        -->
+        <profile>
+            <id>dist</id>
+            <build>
+                <!-- Steps 1-3 all run in the package phase, in the order the plugins are listed. -->
+                <plugins>
+                    <plugin>
+                        <!-- 1. jlink: build a minimal Java runtime that includes the app's module -->
+                        <groupId>org.openjfx</groupId>
+                        <artifactId>javafx-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>runtime-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jlink</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <!-- 2. jpackage: wrap that runtime in a double-clickable app folder -->
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.6.4</version>
+                        <executions>
+                            <execution>
+                                <id>app-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${java.home}/bin/jpackage</executable>
+                                    <workingDirectory>${project.basedir}</workingDirectory>
+                                    <arguments>
+                                        <argument>--type</argument>
+                                        <argument>app-image</argument>
+                                        <argument>--name</argument>
+                                        <argument>Calculator</argument>
+                                        <argument>--app-version</argument>
+                                        <argument>${project.version}</argument>
+                                        <argument>--description</argument>
+                                        <argument>Calculator with scientific modes and a unit converter</argument>
+                                        <argument>--runtime-image</argument>
+                                        <argument>${project.build.directory}/runtime</argument>
+                                        <argument>--module</argument>
+                                        <argument>calculator/${mainClass}</argument>
+                                        <argument>--java-options</argument>
+                                        <argument>--enable-native-access=javafx.graphics</argument>
+                                        <argument>--dest</argument>
+                                        <argument>${project.build.directory}/dist</argument>
+                                        <!-- platform-specific options, e.g. the icon -->
+                                        <argument>@src/main/package/${dist.platform}/jpackage.txt</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <!-- 3. zip the app folder (plus a clean-up before step 1) -->
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <!-- jpackage refuses to overwrite an earlier build -->
+                                <id>clean-dist</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <delete dir="${project.build.directory}/dist"/>
+                                        <delete dir="${project.build.directory}/runtime"/>
+                                    </target>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>zip-dist</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <zip destfile="${project.build.directory}/Calculator-${project.version}-${dist.platform}.zip"
+                                             basedir="${project.build.directory}/dist"/>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Picks the platform name and jpackage options file for the OS doing the build. -->
+        <profile>
+            <id>platform-windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <dist.platform>windows</dist.platform>
+            </properties>
+        </profile>
+        <profile>
+            <id>platform-mac</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <dist.platform>mac</dist.platform>
+            </properties>
+        </profile>
+        <profile>
+            <id>platform-linux</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <name>Linux</name>
+                </os>
+            </activation>
+            <properties>
+                <dist.platform>linux</dist.platform>
+            </properties>
+        </profile>
+    </profiles>
 </project>

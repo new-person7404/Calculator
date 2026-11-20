@@ -1,0 +1,1 @@
+--icon src/main/package/linux/Calculator.png
